@@ -15,3 +15,13 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+Route::get('/helloworld', function()
+{
+	return "hello world";
+});
+
+Route::get('/welcome', array('as' => 'home', 'uses' => 'HomeController@showWelcome'));
+
+//service
+Route::get('/service/simple', array('as' => 'service.simple', 'uses' => 'ServiceController@simpleService'));

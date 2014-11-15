@@ -20,4 +20,23 @@ class ServiceController extends BaseController {
     return Response::json(array('message' => 'Hello world'));
   }
 
+  public function simplePostForm()
+  {
+    return View::make('simple_post');
+  }
+
+  public function simplePostService()
+  {
+    if ( Input::has('message') )
+    {
+      $message = Input::get('message', 'null');
+      DB::insert( "INSERT INTO thesis.simple_message (message) VALUES (?)", array($message) );
+      return Response::json(array('message' => $message, 'command'=>'add', 'result'=>'success'));
+    }
+    else
+    {
+      return Response::json(array('message' => $message, 'command'=>'add', 'result'=>'unsuccess'));
+    }
+  }
+
 }

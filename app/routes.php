@@ -25,3 +25,5 @@ Route::get('/welcome', array('as' => 'home', 'uses' => 'HomeController@showWelco
 
 //service
 Route::get('/service/simple', array('as' => 'service.simple', 'uses' => 'ServiceController@simpleService'));
+Route::get('/service/simple/form', array('as' => 'service.simple.form', 'uses' => 'ServiceController@simplePostForm'));
+Route::post('/service/simple/post', array('as' => 'service.simple.post', 'uses' => 'ServiceController@simplePostService'));

@@ -39,4 +39,18 @@ class ServiceController extends BaseController {
     }
   }
 
+  public function simpleGetService()
+  {
+    $results = DB::select('select * from thesis.simple_message');
+
+    return View::make('simple_get', array('messages' => $results));
+  }
+
+  public function simpleGetServiceById($id)
+  {
+    $results = DB::select('select * from thesis.simple_message where auto_id=?', array($id));
+
+    return View::make('simple_get', array('messages' => $results));
+  }
+
 }

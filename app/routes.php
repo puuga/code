@@ -23,9 +23,13 @@ Route::get('/helloworld', function()
 
 Route::get('/welcome', array('as' => 'home', 'uses' => 'HomeController@showWelcome'));
 
-//service
-Route::get('/service/simple', array('as' => 'service.simple', 'uses' => 'ServiceController@simpleService'));
-Route::get('/service/simple/form', array('as' => 'service.simple.form', 'uses' => 'ServiceController@simplePostForm'));
-Route::post('/service/simple/post', array('as' => 'service.simple.post', 'uses' => 'ServiceController@simplePostService'));
-Route::get('/service/simple/get', array('as' => 'service.simple.get', 'uses' => 'ServiceController@simpleGetService'));
-Route::get('/service/simple/get/{id}', array('as' => 'service.simple.get', 'uses' => 'ServiceController@simpleGetServiceById'));
+// simple service
+Route::group(array('prefix' => 'service/simple'), function() {
+	Route::get('/', array('as' => 'service.simple', 'uses' => 'ServiceController@simpleService'));
+	Route::get('form', array('as' => 'service.simple.form', 'uses' => 'ServiceController@simplePostForm'));
+	Route::post('post', array('as' => 'service.simple.post', 'uses' => 'ServiceController@saveMessage'));
+	Route::get('get', array('as' => 'service.simple.get', 'uses' => 'ServiceController@getMessage'));
+	Route::get('get/{id}', array('as' => 'service.simple.get', 'uses' => 'ServiceController@getMessageById'));
+	Route::post('update/{id}', array('as' => 'service.simple.update.do', 'uses' => 'ServiceController@updateMessage'));
+	Route::get('update/{id}', array('as' => 'service.simple.update.form', 'uses' => 'ServiceController@simpleUpdateForm'));
+});

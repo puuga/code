@@ -2,19 +2,6 @@
 
 class ServiceController extends BaseController {
 
-  /*
-  |--------------------------------------------------------------------------
-  | Default Home Controller
-  |--------------------------------------------------------------------------
-  |
-  | You may wish to use controllers instead of, or in addition to, Closure
-  | based routes. That's great! Here is an example controller method to
-  | get you started. To route to this controller, just add the route:
-  |
-  |	Route::get('/', 'HomeController@showWelcome');
-  |
-  */
-
   public function simpleService()
   {
     return Response::json(array('message' => 'Hello world'));
@@ -25,12 +12,23 @@ class ServiceController extends BaseController {
     return View::make('simple_post');
   }
 
-  public function simplePostService()
+  public function simpleUpdateForm($id)
+  {
+    $message = Message::find($id);
+
+    return View::make('simple_update', array('message' => $message));
+  }
+
+  public function saveMessage()
   {
     if ( Input::has('message') )
     {
-      $message = Input::get('message', 'null');
-      DB::insert( "INSERT INTO thesis.simple_message (message) VALUES (?)", array($message) );
+      //$message = Input::get('message', 'null');
+      //DB::insert( "INSERT INTO thesis.simple_message (message) VALUES (?)", array($message) );
+      $message = new Message;
+      $message->message = Input::get('message', 'null');
+      $message->save();
+
       return Response::json(array('message' => $message, 'command'=>'add', 'result'=>'success'));
     }
     else
@@ -39,16 +37,36 @@ class ServiceController extends BaseController {
     }
   }
 
-  public function simpleGetService()
+  public function updateMessage($id)
   {
-    $results = DB::select('select * from thesis.simple_message');
+    $message = Message::find($id);
+
+		// Check vehicle exists
+		if (! $message) {
+			return Response::json(array('message' => $message, 'command'=>'update', 'result'=>'unsuccess'));
+		}
+
+    if (Input::has('message')) {
+			$message->message = Input::get('message');
+		}
+
+    $message->save();
+
+    return Response::json(array('message' => $message, 'command'=>'update', 'result'=>'success'));
+  }
+
+  public function getMessage()
+  {
+    //$results = DB::select('select * from thesis.simple_message');
+    $results = Message::query()->get();
 
     return View::make('simple_get', array('messages' => $results));
   }
 
-  public function simpleGetServiceById($id)
+  public function getMessageById($id)
   {
-    $results = DB::select('select * from thesis.simple_message where auto_id=?', array($id));
+    //$results = DB::select('select * from thesis.simple_message where auto_id=?', array($id));
+    $results = Message::query()->where('id',$id)->get();
 
     return View::make('simple_get', array('messages' => $results));
   }
